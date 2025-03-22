@@ -1,0 +1,51 @@
+managed implementation in class zbp_i_ud_studentroot unique;
+strict ( 2 );
+with draft;
+
+define behavior for Zi_ud_studentroot //alias <alias_name>
+with unmanaged save
+draft table ZUD_D_ROOT
+//persistent table t002
+lock master
+total etag maxChangedat
+authorization master ( instance )
+//etag master <field_name>
+{
+  //  create;
+  //  update;
+  //  delete;
+  field ( readonly ) RootId;
+  association _student { create; }
+  draft action Edit;
+draft action Activate optimized;
+draft action Discard;
+draft action Resume;
+draft determine action Prepare;
+}
+
+define behavior for Zi_ud_student_m //alias <alias_name>
+persistent table zud_student_m
+draft table zud_d_student_m
+lock dependent by _studentroot
+authorization dependent by _studentroot
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+  field ( mandatory : create , readonly:update ) StudentId;
+  field ( readonly ) RootId;
+  association _studentroot;
+
+  mapping for zud_student_m
+    {
+      StudentId    = student_id;
+      StudentName  = student_name;
+      Age          = age;
+      Class        = class;
+      ClassSection = class_section;
+      AvgMarks     = avg_marks;
+      ChangedBy          = changed_by;
+      ChangedAt          = changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}

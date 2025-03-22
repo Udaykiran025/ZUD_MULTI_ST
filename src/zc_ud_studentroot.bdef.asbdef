@@ -1,0 +1,21 @@
+projection;
+strict ( 2 );
+use draft;
+define behavior for Zc_ud_studentroot //alias <alias_name>
+{
+
+use action Edit;
+use action Activate;
+use action Discard;
+use action Prepare;
+use action Resume;
+  use association _student { create; with draft;  }
+}
+
+define behavior for ZC_ud_Student_m //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _studentroot{with draft;}
+}
